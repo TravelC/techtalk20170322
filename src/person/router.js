@@ -14,6 +14,9 @@ router.get('/', async ctx => {
 
 router.post('/login', async ctx => {
   const { email, password } = ctx.request.body
+  if (!email || !password) {
+    throw Boom.expectationFailed('require email and password', { email, password })
+  }
   const person = await Person.unscoped().findOne({ where: { email } })
   if (person) {
     if (person.matchPassword(password)) {
@@ -22,7 +25,11 @@ router.post('/login', async ctx => {
         token,
         person: person.toSafeJSON()
       }
+    } else {
+      throw Boom.forbidden('wrong password')
     }
+  } else {
+    throw Boom.notFound('user not found')
   }
 })
 

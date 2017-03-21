@@ -9,9 +9,32 @@ describe("router - people", () => {
   })
 
   describe('/login', () => {
+    it('should throw on missing infomation', async () => {
+      const res = await app.post('/people/login')
+      expect(res.status).to.equal(417)
+      expect(res.body.message).to.equal('require email and password')
+    })
+
+    it('should throw on not existing user', async () => {
+      const res = await app.post('/people/login').send({
+        email: 'notexist@gmail.com',
+        password: 'password'
+      })
+      expect(res.status).to.equal(404)
+      expect(res.body.message).to.equal('user not found')
+    })
+
+    it('should throw on not matching password', async () => {
+      const res = await app.post('/people/login').send({
+        email: 'shengning@gmail.com',
+        password: 'wrong password'
+      })
+      expect(res.status).to.equal(403)
+      expect(res.body.message).to.equal('wrong password')
+    })
 
     it('should login', async () => {
-      let res = await app.post('/people/login').send({
+      const res = await app.post('/people/login').send({
         email: 'shengning@gmail.com',
         password: 'password'
       })
