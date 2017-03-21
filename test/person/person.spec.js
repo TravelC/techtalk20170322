@@ -2,6 +2,26 @@ import Person from '../../src/person/model'
 import sinon from 'sinon-es6'
 import mail from '../../src/mail'
 
+describe("model - Person", () => {
+  it('should have "salt" and generated "hash" from "password" but not password saved', () => {
+    const password = 'password'
+    const user = Person.build({ password })
+    expect(user.salt).to.have.length(64)
+    expect(user.hash).to.have.length(64)
+    expect(user.hash).to.equal(Person.hash(password, user.salt))
+    expect(user.password).to.be.undefined
+    user.matchPassword(password).should.be.true
+    user.generateToken().should.not.be.undefined
+  })
+
+  it('should yield an error if password is undefined', () => {
+    let user = Person.build()
+    expect(user.salt).to.be.undefined
+    expect(user.hash).to.be.undefined
+    expect(() => Person.build({password: ''})).to.throw('password should have at least 6 characters')
+  })
+})
+
 describe("router - /people", () => {
 
   describe('/login', () => {

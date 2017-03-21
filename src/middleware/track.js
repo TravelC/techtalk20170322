@@ -10,7 +10,6 @@ export default () => {
     }
     const { state: { person } } = ctx
     if (person) {
-      console.log(person.Model.associations.histories.accessors);
       await person.createHistory({
         path: `${ctx.method} ${ctx.path}`,
         body: JSON.stringify(ctx.request.body),
