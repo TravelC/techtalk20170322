@@ -1,12 +1,6 @@
+import Person from '../../src/person/model'
 
 describe("router - people", () => {
-
-  it('should return a message', async () => {
-    const res = await app.get('/people')
-    expect(res.status).to.equal(200)
-    expect(res.body).to.have.key('message')
-    expect(res.body.message).to.equal('hello')
-  })
 
   describe('/login', () => {
     it('should throw on missing infomation', async () => {
@@ -45,6 +39,24 @@ describe("router - people", () => {
       expect(res.body.person.salt).to.not.exist
       expect(res.body.person.hash).to.not.exist
     })
+  })
 
+  describe('/me', () => {
+    it('should throw if no token provided', async () => {
+      const res = await app.get('/people/me')
+      expect(res.status).to.equal(401)
+      expect(res.body.message).to.equal('No authentication token found')
+    })
+
+    it('should return my userinfo', async () => {
+      const person = await Person.findById(1)
+      const token = person.generateToken()
+      const res = await app.get('/people/me').set('Authorization', `Bearer ${token}`)
+      expect(res.status).to.equal(200)
+      expect(res.body.person.id).to.equal(1)
+      expect(res.body.person.password).to.not.exist
+      expect(res.body.person.salt).to.not.exist
+      expect(res.body.person.hash).to.not.exist
+    })
   })
 })

@@ -1,15 +1,17 @@
+//@flow
 
 import Router from 'koa-router'
 import Boom from 'boom'
 import Person from './model'
+import { auth } from '../middleware'
 
 const router = new Router({
   prefix: '/people'
 })
 
-router.get('/', async ctx => {
-  const message = 'hello'
-  ctx.body = { message }
+router.get('/me', auth, async ctx => {
+  const { person } = ctx.state
+  ctx.body = { person: person.toSafeJSON() }
 })
 
 router.post('/login', async ctx => {
