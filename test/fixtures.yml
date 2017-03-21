@@ -1,0 +1,17 @@
+fixtures:
+  - model: person
+    data:
+      id: 1
+      email: shengning@gmail.com
+      first_name: ning
+      last_name: sheng
+      salt: 99c751ab86303aefa9c2accd1118e90c4142ed629a600649ddcab8e693a971df
+      hash: edba21231351b18635c7469269cb35177ece5dcdefb759c73a5b1fbfcf08477d
+  - model: person
+    data:
+      id: 2
+      email: shengning+1@gmail.com
+      first_name: ning
+      last_name: sheng
+      salt: 99c751ab86303aefa9c2accd1118e90c4142ed629a600649ddcab8e693a971df
+      hash: edba21231351b18635c7469269cb35177ece5dcdefb759c73a5b1fbfcf08477d

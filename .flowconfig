@@ -4,7 +4,7 @@
 [include]
 
 [libs]
-api/decls/
+decls/
 
 [options]
 module.system=haste
