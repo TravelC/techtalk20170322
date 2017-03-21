@@ -15,6 +15,7 @@
     "koa-body": "^2.0.0",
     "koa-router": "^7.0.1",
     "mysql": "^2.13.0",
+    "nodemailer": "^3.1.8",
     "sequelize": "^3.30.2"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "chai": "^3.5.0",
     "sequelize-fixtures": "^0.5.6",
+    "sinon-es6": "^0.0.3",
     "sqlite3": "^3.1.8",
     "supertest": "^3.0.0"
   }

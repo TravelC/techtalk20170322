@@ -4,6 +4,7 @@ import Router from 'koa-router'
 import Boom from 'boom'
 import Person from './model'
 import { auth } from '../middleware'
+import mail from '../mail'
 
 const router = new Router({
   prefix: '/people'
@@ -32,6 +33,20 @@ router.post('/login', async ctx => {
     }
   } else {
     throw Boom.notFound('user not found')
+  }
+})
+
+router.post('/create', async ctx => {
+  const { email, password, first_name, last_name } = ctx.request.body
+  if (!email || !password) {
+    throw Boom.expectationFailed('require email and password', { email, password })
+  }
+  const person = await Person.create({ email, password, first_name, last_name })
+  const token = person.generateToken()
+  mail.sendMail({ from: process.env.MAIL_ACCOUNT, to: email, subject: 'Welcome to iLabs Tech Talk', text: 'Nice to meet you' })
+  ctx.body = {
+    token,
+    person: person.toSafeJSON()
   }
 })
 
